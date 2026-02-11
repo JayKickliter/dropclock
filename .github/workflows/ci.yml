@@ -8,6 +8,8 @@ concurrency:
 
 env:
   CARGO_TERM_COLOR: always
+  RUSTFLAGS: -Dwarnings
+  RUSTDOCFLAGS: -Dwarnings
 
 jobs:
   ci:
@@ -21,11 +23,15 @@ jobs:
       - name: Build | Cargo
         run: cargo build --all-targets
       - name: Lint | Clippy
-        run: cargo clippy --all-targets -- -Dclippy::all
+        run: cargo clippy --all-targets -- -Wclippy::all -Wclippy::cargo
       - name: Check | Formatting
         run: cargo fmt --check
       - name: Test | Cargo
         run: cargo test
+      - name: Check | Docs
+        run: cargo doc --no-deps
+      - name: Lint | ShellCheck
+        run: shellcheck pre-commit.sh
 
   msrv:
     runs-on: ubuntu-latest

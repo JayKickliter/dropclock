@@ -1,9 +1,16 @@
 #![deny(missing_docs)]
 #![doc = include_str!("../README.md")]
 
+use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::time::Instant;
 
 /// Runs a closure on drop, passing the [`Instant`] captured at creation.
+///
+/// # Unwind safety
+///
+/// The closure runs during drop, including during unwinding from a
+/// panic. If the closure itself panics, the panic is caught and
+/// silently discarded to avoid aborting the process.
 pub struct DropClock<F: FnOnce(Instant)> {
     start: Instant,
     on_drop: Option<F>,
@@ -26,7 +33,8 @@ impl<F: FnOnce(Instant)> DropClock<F> {
 impl<F: FnOnce(Instant)> Drop for DropClock<F> {
     fn drop(&mut self) {
         if let Some(on_drop) = self.on_drop.take() {
-            (on_drop)(self.start);
+            let start = self.start;
+            let _ = catch_unwind(AssertUnwindSafe(|| (on_drop)(start)));
         }
     }
 }
@@ -59,5 +67,12 @@ mod tests {
             timer.cancel();
         }
         assert!(!fired);
+    }
+
+    #[test]
+    fn panicking_closure_does_not_abort() {
+        let _timer = DropClock::new(|_start| {
+            panic!("this panic is caught in drop impl");
+        });
     }
 }

@@ -3,5 +3,5 @@
 set -ex
 
 cargo fmt -- --check
-cargo clippy --all-targets -- -Dclippy::all
+cargo clippy --all-targets -- -Dclippy::pedantic -Dclippy::cargo
 cargo test

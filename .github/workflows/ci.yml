@@ -21,7 +21,7 @@ jobs:
       - name: Build | Cargo
         run: cargo build --all-targets
       - name: Lint | Clippy
-        run: cargo clippy --all-targets -- -Dclippy::all
+        run: cargo clippy --all-targets -- -Dclippy::all -Dclippy::cargo
       - name: Check | Formatting
         run: cargo fmt --check
       - name: Test | Cargo

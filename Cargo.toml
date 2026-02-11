@@ -1,13 +1,13 @@
 [package]
-name = "dropclock"
-authors = ["Jay Kickliter"]
-categories = ["development-tools::profiling"]
-description = "A guard type that runs a closure with the creation instant on drop"
+name          = "dropclock"
+authors       = ["Jay Kickliter"]
+categories    = ["development-tools::profiling"]
+description   = "A guard type that runs a closure with the creation instant on drop"
 documentation = "https://docs.rs/dropclock"
-edition = "2018"
-rust-version = "1.54"
-keywords = ["timer", "drop", "scope", "duration"]
-license = "MIT OR Apache-2.0"
-readme = "README.md"
-repository = "https://github.com/JayKickliter/dropclock"
-version = "0.1.0"
+edition       = "2018"
+keywords      = ["timer", "drop", "scope", "duration"]
+license       = "MIT OR Apache-2.0"
+readme        = "README.md"
+repository    = "https://github.com/JayKickliter/dropclock"
+rust-version  = "1.54"
+version       = "0.1.0"
